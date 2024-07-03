@@ -1,7 +1,7 @@
 const express = require("express");
 const schedule = require("node-schedule");
 const database = require("./firebase");
-const { ref, get, set } = require("firebase/database");
+const { ref, get, set, update } = require("firebase/database");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -87,35 +87,33 @@ try {
 
     // Check if the least selected card is present for any player
 
-    Object.values(gameData).forEach(async (player) => {
+    for (const player of Object.values(gameData)) {
       const mobile = player.mobile;
       console.log(mobile);
       if (player.selectedCards) {
-        player.selectedCards.forEach(async (cardData) => {
+        for (const cardData of player.selectedCards) {
           console.log(cardData);
           console.log(cardData.amount);
-          if (cardData.cardId == leastSelectedCard) {
-            let winamount = cardData.amount * 2;
-            amountSpent += winamount;
+          if (cardData.cardId === leastSelectedCard) {
+            let winAmount = cardData.amount * 2;
             console.log("================win amount ===============");
-            console.log(winamount);
+            console.log(winAmount);
             const userRef = ref(database, `username/${mobile}`);
             const userSnapshot = await get(userRef);
             const userData = userSnapshot.val();
             console.log(userData);
             if (userData) {
-              const newAmount = userData.amount + winamount;
+              const newAmount = userData.walletBalance + winAmount;
               console.log(newAmount);
-              await set(userRef, { phone: mobile, amount: newAmount });
+              await update(userRef, { walletBalance: newAmount });
               console.log(`Increased amount for player `);
             } else {
               console.log(`User data not found for player`);
             }
           }
-        });
+        }
       }
-    });
-
+    }
     let leftAmount = totalAmount - amountSpent;
 
     // Store the result in Firebase
