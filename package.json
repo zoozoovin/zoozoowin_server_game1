@@ -2,6 +2,7 @@
   "dependencies": {
     "express": "^4.19.2",
     "firebase": "^10.12.2",
+    "firebase-admin": "^12.2.0",
     "node-schedule": "^2.1.1"
   }
 }
