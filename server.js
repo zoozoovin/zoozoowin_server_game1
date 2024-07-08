@@ -248,15 +248,15 @@ async function fetchAndProcessData() {
                 "you won Rs " +
                   winAmount +
                   " in " +
-                  istHour +
+                  hour +
                   ":00 PM time slot"
               );
               await fetchNotifications(mobile);
               await addNotification(
                 mobile,
-                `PLAY WIN - you won Rs ${winAmount} in ${istHour}:00 PM slot`,
+                `PLAY WIN - you won Rs ${winAmount} in ${hour}:00 PM slot`,
                 formattedDate,
-                istHour,
+                hour,
                 "game"
               );
               amountSpent += winAmount;
