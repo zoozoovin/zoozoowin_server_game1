@@ -114,7 +114,7 @@ async function fetchAndProcessData() {
   // Convert GMT time to IST (GMT + 5:30)
   const istOffset = 5.5 * 60 * 60 * 1000;
 
-  const istTime = new Date(now.getTime() +istOffset );
+  const istTime = new Date(now.getTime() + istOffset);
 
   const formattedDate = `${istTime.getDate().toString().padStart(2, "0")}-${(
     istTime.getMonth() + 1
@@ -122,7 +122,7 @@ async function fetchAndProcessData() {
     .toString()
     .padStart(2, "0")}-${istTime.getFullYear()}`;
   let hour = istTime.getHours();
-  let istHour = new Date(now.getTime()).getHours();
+  // let istHour = new Date(now.getTime()).getHours();
 
   const period = hour >= 12 ? "PM" : "AM";
   let displayHour = hour % 12 || 12; // Converts 0 to 12 for 12-hour format
@@ -136,7 +136,7 @@ async function fetchAndProcessData() {
   const dataRef = ref(database, refPath);
 
   // Check if the IST time slot is between 12 PM to 11 PM
-  if (istHour < 12 || istHour > 23) {
+  if (hour < 12 || hour > 23) {
     console.log(
       "Time slot is outside 12 PM to 11 PM IST. No game data to process."
     );
@@ -245,7 +245,11 @@ async function fetchAndProcessData() {
               sendNotification(
                 userData.fcm_token,
                 "PLAY WIN - Hurray!",
-                "you won Rs " + winAmount + " in " + istHour + ":00 PM time slot"
+                "you won Rs " +
+                  winAmount +
+                  " in " +
+                  istHour +
+                  ":00 PM time slot"
               );
               await fetchNotifications(mobile);
               await addNotification(
