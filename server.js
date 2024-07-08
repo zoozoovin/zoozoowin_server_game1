@@ -6,7 +6,7 @@ const { ref, get, set, update } = require("firebase/database");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-const admin = require("firebase-admin");
+// const admin = require("firebase-admin");
 
 // const serviceAccount = require("./zoozoovin-86d2e-firebase-adminsdk-csbnn-a0ea339203.json");
 
@@ -43,68 +43,68 @@ const admin = require("firebase-admin");
 // sendNotification(token, "hello", "test");
 
 // Function to fetch notifications
-async function fetchNotifications(phone) {
-  const ref = admin.database().ref(`notification/${phone}`);
+// async function fetchNotifications(phone) {
+//   const ref = admin.database().ref(`notification/${phone}`);
 
-  try {
-    const snapshot = await ref.once("value");
-    if (snapshot.exists()) {
-      const notifications = snapshot.val();
-      console.log("Fetched notifications:", notifications);
-      return notifications;
-    } else {
-      console.log("No notifications found");
-      return {};
-    }
-  } catch (error) {
-    console.error("Error fetching notifications:", error);
-    return {};
-  }
-}
+//   try {
+//     const snapshot = await ref.once("value");
+//     if (snapshot.exists()) {
+//       const notifications = snapshot.val();
+//       console.log("Fetched notifications:", notifications);
+//       return notifications;
+//     } else {
+//       console.log("No notifications found");
+//       return {};
+//     }
+//   } catch (error) {
+//     console.error("Error fetching notifications:", error);
+//     return {};
+//   }
+// }
 
-// Function to add a new notification
-async function addNotification(
-  phone,
-  title,
-  formattedDate,
-  formattedTime,
-  type
-) {
-  const ref = admin.database().ref(`notification/${phone}`);
+// // Function to add a new notification
+// async function addNotification(
+//   phone,
+//   title,
+//   formattedDate,
+//   formattedTime,
+//   type
+// ) {
+//   const ref = admin.database().ref(`notification/${phone}`);
 
-  try {
-    // Fetch existing notifications
-    const notifications = await fetchNotifications(phone);
+//   try {
+//     // Fetch existing notifications
+//     const notifications = await fetchNotifications(phone);
 
-    // Check if there are notifications for the specific date
-    if (notifications[formattedDate]) {
-      notifications[formattedDate].push({
-        title: title,
-        date: formattedDate,
-        time: formattedTime,
-        type: type,
-      });
-    } else {
-      notifications[formattedDate] = [
-        {
-          title: title,
-          date: formattedDate,
-          time: formattedTime,
-          type: type,
-        },
-      ];
-    }
+//     // Check if there are notifications for the specific date
+//     if (notifications[formattedDate]) {
+//       notifications[formattedDate].push({
+//         title: title,
+//         date: formattedDate,
+//         time: formattedTime,
+//         type: type,
+//       });
+//     } else {
+//       notifications[formattedDate] = [
+//         {
+//           title: title,
+//           date: formattedDate,
+//           time: formattedTime,
+//           type: type,
+//         },
+//       ];
+//     }
 
-    // Update the database with the new notification list
-    await ref.update({
-      [formattedDate]: notifications[formattedDate],
-    });
+//     // Update the database with the new notification list
+//     await ref.update({
+//       [formattedDate]: notifications[formattedDate],
+//     });
 
-    console.log("Notification added successfully");
-  } catch (error) {
-    console.error("Error adding notification:", error);
-  }
-}
+//     console.log("Notification added successfully");
+//   } catch (error) {
+//     console.error("Error adding notification:", error);
+//   }
+// }
 
 // Function to fetch and process data
 async function fetchAndProcessData() {
@@ -251,14 +251,14 @@ async function fetchAndProcessData() {
               //     hour +
               //     ":00 PM time slot"
               // );
-              await fetchNotifications(mobile);
-              await addNotification(
-                mobile,
-                `PLAY WIN - you won Rs ${winAmount} in ${hour}:00 PM slot`,
-                formattedDate,
-                hour,
-                "game"
-              );
+              // await fetchNotifications(mobile);
+              // await addNotification(
+              //   mobile,
+              //   `PLAY WIN - you won Rs ${winAmount} in ${hour}:00 PM slot`,
+              //   formattedDate,
+              //   hour,
+              //   "game"
+              // );
               amountSpent += winAmount;
 
               console.log(newAmount);
