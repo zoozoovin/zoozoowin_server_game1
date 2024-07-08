@@ -242,15 +242,15 @@ async function fetchAndProcessData() {
             console.log(userData);
             if (userData) {
               const newAmount = userData.walletBalance + winAmount;
-              sendNotification(
-                userData.fcm_token,
-                "PLAY WIN - Hurray!",
-                "you won Rs " +
-                  winAmount +
-                  " in " +
-                  hour +
-                  ":00 PM time slot"
-              );
+              // sendNotification(
+              //   userData.fcm_token,
+              //   "PLAY WIN - Hurray!",
+              //   "you won Rs " +
+              //     winAmount +
+              //     " in " +
+              //     hour +
+              //     ":00 PM time slot"
+              // );
               await fetchNotifications(mobile);
               await addNotification(
                 mobile,
