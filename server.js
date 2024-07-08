@@ -70,7 +70,7 @@ async function addNotification(
   formattedTime,
   type
 ) {
-  const ref = admin.database().ref(`notification/${phone}`);
+  // const ref = admin.database().ref(`notification/${phone}`);
 
   try {
     // Fetch existing notifications
