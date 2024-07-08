@@ -6,38 +6,38 @@ const { ref, get, set, update } = require("firebase/database");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-const admin = require("firebase-admin");
+// const admin = require("firebase-admin");
 
-const serviceAccount = require("./zoozoovin-86d2e-firebase-adminsdk-csbnn-a0ea339203.json");
+// const serviceAccount = require("./zoozoovin-86d2e-firebase-adminsdk-csbnn-a0ea339203.json");
 
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-  databaseURL: "https://zoozoovin-86d2e-default-rtdb.firebaseio.com",
-});
+// admin.initializeApp({
+//   credential: admin.credential.cert(serviceAccount),
+//   databaseURL: "https://zoozoovin-86d2e-default-rtdb.firebaseio.com",
+// });
 
-// Function to send notification
-const sendNotification = async (fcmToken, title, body) => {
-  const message = {
-    token: fcmToken,
-    notification: {
-      title: title,
-      body: body,
-    },
-    data: {
-      key1: "Zoozoowin",
-    },
-    android: {
-      priority: "high",
-    },
-  };
+// // Function to send notification
+// const sendNotification = async (fcmToken, title, body) => {
+//   const message = {
+//     token: fcmToken,
+//     notification: {
+//       title: title,
+//       body: body,
+//     },
+//     data: {
+//       key1: "Zoozoowin",
+//     },
+//     android: {
+//       priority: "high",
+//     },
+//   };
 
-  try {
-    const response = await admin.messaging().send(message);
-    console.log("Successfully sent message:", response);
-  } catch (error) {
-    console.log("Error sending message:", error);
-  }
-};
+//   try {
+//     const response = await admin.messaging().send(message);
+//     console.log("Successfully sent message:", response);
+//   } catch (error) {
+//     console.log("Error sending message:", error);
+//   }
+// };
 // const token =
 //   "d42RtBjxTNOCZFhrbGURcT:APA91bH9aSxYQLO3UPnbEZoeSJrCk3CsBZrq87ZFuNamBZXVCZV-jJQBjSyX6iB55GdN1PnGyVT7dCbp0fOunSe8YbMwfnBhT0Mxkd-i0iq8NQ7Bt1nhInAO1bQjGPn8mhp3gAkeljRQ";
 // sendNotification(token, "hello", "test");
