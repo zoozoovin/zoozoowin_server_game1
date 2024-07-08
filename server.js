@@ -6,7 +6,7 @@ const { ref, get, set, update } = require("firebase/database");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// const admin = require("firebase-admin");
+const admin = require("firebase-admin");
 
 // const serviceAccount = require("./zoozoovin-86d2e-firebase-adminsdk-csbnn-a0ea339203.json");
 
@@ -70,7 +70,7 @@ async function addNotification(
   formattedTime,
   type
 ) {
-  // const ref = admin.database().ref(`notification/${phone}`);
+  const ref = admin.database().ref(`notification/${phone}`);
 
   try {
     // Fetch existing notifications
