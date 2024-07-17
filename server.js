@@ -6,105 +6,106 @@ const { ref, get, set, update } = require("firebase/database");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// const admin = require("firebase-admin");
+const admin = require("firebase-admin");
 
-// const serviceAccount = require("./zoozoovin-86d2e-firebase-adminsdk-csbnn-a0ea339203.json");
+const serviceAccount = require("./zoozoovin-86d2e-firebase-adminsdk-csbnn-61177e0936.json");
 
-// admin.initializeApp({
-//   credential: admin.credential.cert(serviceAccount),
-//   databaseURL: "https://zoozoovin-86d2e-default-rtdb.firebaseio.com",
-// });
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
 
-// // Function to send notification
-// const sendNotification = async (fcmToken, title, body) => {
-//   const message = {
-//     token: fcmToken,
-//     notification: {
-//       title: title,
-//       body: body,
-//     },
-//     data: {
-//       key1: "Zoozoowin",
-//     },
-//     android: {
-//       priority: "high",
-//     },
-//   };
+  databaseURL: "https://zoozoovin-86d2e-default-rtdb.firebaseio.com",
+});
 
-//   try {
-//     const response = await admin.messaging().send(message);
-//     console.log("Successfully sent message:", response);
-//   } catch (error) {
-//     console.log("Error sending message:", error);
-//   }
-// };
+// Function to send notification
+const sendNotification = async (fcmToken, title, body) => {
+  const message = {
+    token: fcmToken,
+    notification: {
+      title: title,
+      body: body,
+    },
+    data: {
+      key1: "Zoozoowin",
+    },
+    android: {
+      priority: "high",
+    },
+  };
+
+  try {
+    const response = await admin.messaging().send(message);
+    console.log("Successfully sent message:", response);
+  } catch (error) {
+    console.log("Error sending message:", error);
+  }
+};
 // const token =
 //   "d42RtBjxTNOCZFhrbGURcT:APA91bH9aSxYQLO3UPnbEZoeSJrCk3CsBZrq87ZFuNamBZXVCZV-jJQBjSyX6iB55GdN1PnGyVT7dCbp0fOunSe8YbMwfnBhT0Mxkd-i0iq8NQ7Bt1nhInAO1bQjGPn8mhp3gAkeljRQ";
 // sendNotification(token, "hello", "test");
 
 // Function to fetch notifications
-// async function fetchNotifications(phone) {
-//   const ref = admin.database().ref(`notification/${phone}`);
+async function fetchNotifications(phone) {
+  const ref = admin.database().ref(`notification/${phone}`);
 
-//   try {
-//     const snapshot = await ref.once("value");
-//     if (snapshot.exists()) {
-//       const notifications = snapshot.val();
-//       console.log("Fetched notifications:", notifications);
-//       return notifications;
-//     } else {
-//       console.log("No notifications found");
-//       return {};
-//     }
-//   } catch (error) {
-//     console.error("Error fetching notifications:", error);
-//     return {};
-//   }
-// }
+  try {
+    const snapshot = await ref.once("value");
+    if (snapshot.exists()) {
+      const notifications = snapshot.val();
+      console.log("Fetched notifications:", notifications);
+      return notifications;
+    } else {
+      console.log("No notifications found");
+      return {};
+    }
+  } catch (error) {
+    console.error("Error fetching notifications:", error);
+    return {};
+  }
+}
 
-// // Function to add a new notification
-// async function addNotification(
-//   phone,
-//   title,
-//   formattedDate,
-//   formattedTime,
-//   type
-// ) {
-//   const ref = admin.database().ref(`notification/${phone}`);
+// Function to add a new notification
+async function addNotification(
+  phone,
+  title,
+  formattedDate,
+  formattedTime,
+  type
+) {
+  const ref = admin.database().ref(`notification/${phone}`);
 
-//   try {
-//     // Fetch existing notifications
-//     const notifications = await fetchNotifications(phone);
+  try {
+    // Fetch existing notifications
+    const notifications = await fetchNotifications(phone);
 
-//     // Check if there are notifications for the specific date
-//     if (notifications[formattedDate]) {
-//       notifications[formattedDate].push({
-//         title: title,
-//         date: formattedDate,
-//         time: formattedTime,
-//         type: type,
-//       });
-//     } else {
-//       notifications[formattedDate] = [
-//         {
-//           title: title,
-//           date: formattedDate,
-//           time: formattedTime,
-//           type: type,
-//         },
-//       ];
-//     }
+    // Check if there are notifications for the specific date
+    if (notifications[formattedDate]) {
+      notifications[formattedDate].push({
+        title: title,
+        date: formattedDate,
+        time: formattedTime,
+        type: type,
+      });
+    } else {
+      notifications[formattedDate] = [
+        {
+          title: title,
+          date: formattedDate,
+          time: formattedTime,
+          type: type,
+        },
+      ];
+    }
 
-//     // Update the database with the new notification list
-//     await ref.update({
-//       [formattedDate]: notifications[formattedDate],
-//     });
+    // Update the database with the new notification list
+    await ref.update({
+      [formattedDate]: notifications[formattedDate],
+    });
 
-//     console.log("Notification added successfully");
-//   } catch (error) {
-//     console.error("Error adding notification:", error);
-//   }
-// }
+    console.log("Notification added successfully");
+  } catch (error) {
+    console.error("Error adding notification:", error);
+  }
+}
 
 // Function to fetch and process data
 async function fetchAndProcessData() {
@@ -225,6 +226,53 @@ async function fetchAndProcessData() {
     }
 
     // Check if the least selected card is present for any player
+    // for (const player of Object.values(gameData)) {
+    //   const mobile = player.mobile;
+    //   console.log(mobile);
+    //   if (player.selectedCards) {
+    //     for (const cardData of player.selectedCards) {
+    //       console.log(cardData);
+    //       console.log(cardData.amount);
+    //       if (cardData.cardId === leastSelectedCard) {
+    //         let winAmount = cardData.amount * 2;
+    //         console.log("================win amount ===============");
+    //         console.log(winAmount);
+    //         const userRef = ref(database, `username/${mobile}`);
+    //         const userSnapshot = await get(userRef);
+    //         const userData = userSnapshot.val();
+    //         console.log(userData);
+    //         if (userData) {
+    //           const newAmount = userData.walletBalance + winAmount;
+    //           // sendNotification(
+    //           //   userData.fcm_token,
+    //           //   "PLAY WIN - Hurray!",
+    //           //   "you won Rs " +
+    //           //     winAmount +
+    //           //     " in " +
+    //           //     hour +
+    //           //     ":00 PM time slot"
+    //           // );
+    // await fetchNotifications(mobile);
+    // await addNotification(
+    //   mobile,
+    //   `PLAY WIN - you won Rs ${winAmount} in ${hour}:00 PM slot`,
+    //   formattedDate,
+    //   hour,
+    //   "game"
+    // );
+    //           amountSpent += winAmount;
+
+    //           console.log(newAmount);
+    //           await update(userRef, { walletBalance: newAmount , wonCashAmount :  });
+    //           console.log(`Increased amount for player `);
+    //         } else {
+    //           console.log(`User data not found for player`);
+    //         }
+    //       }
+    //     }
+    //   }
+    // }
+
     for (const player of Object.values(gameData)) {
       const mobile = player.mobile;
       console.log(mobile);
@@ -242,28 +290,50 @@ async function fetchAndProcessData() {
             console.log(userData);
             if (userData) {
               const newAmount = userData.walletBalance + winAmount;
-              // sendNotification(
-              //   userData.fcm_token,
-              //   "PLAY WIN - Hurray!",
-              //   "you won Rs " +
-              //     winAmount +
-              //     " in " +
-              //     hour +
-              //     ":00 PM time slot"
-              // );
-              // await fetchNotifications(mobile);
-              // await addNotification(
-              //   mobile,
-              //   `PLAY WIN - you won Rs ${winAmount} in ${hour}:00 PM slot`,
-              //   formattedDate,
-              //   hour,
-              //   "game"
-              // );
+
+              // Prepare the new wonCashAmount entry
+              const newEntry = {
+                amount: winAmount,
+                date: formattedDate,
+                timeSlot: `${formattedDisplayHour}:00 PM`,
+                title: `PLAY WIN - you won ₹ ${winAmount} in ${formattedDisplayHour}:00 PM slot`,
+                type: "game1",
+              };
+
+              // Fetch existing wonCashAmount list or initialize a new one
+              let wonCashAmountList = userData.wonCashAmount || [];
+
+              // Add the new entry to the list
+              wonCashAmountList.push(newEntry);
+
+              sendNotification(
+                userData.fcm_token,
+                "PLAY WIN - Hurray!",
+                "you won Rs " +
+                  winAmount +
+                  " in " +
+                  formattedDisplayHour +
+                  ":00 PM time slot"
+              );
+              await fetchNotifications(mobile);
+              await addNotification(
+                mobile,
+                `PLAY WIN - you won Rs ${winAmount} in ${formattedDisplayHour}:00 PM slot`,
+                formattedDate,
+                formattedDisplayHour,
+                "game1"
+              );
+
               amountSpent += winAmount;
 
               console.log(newAmount);
-              await update(userRef, { walletBalance: newAmount });
-              console.log(`Increased amount for player `);
+              await update(userRef, {
+                walletBalance: newAmount,
+                wonCashAmount: wonCashAmountList,
+              });
+              console.log(
+                `Increased amount for player and updated wonCashAmount list`
+              );
             } else {
               console.log(`User data not found for player`);
             }
