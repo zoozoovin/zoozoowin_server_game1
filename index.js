@@ -417,7 +417,7 @@ const PORT = process.env.PORT || 3000;
 async function fetchAndProcessData() {
   const now = new Date();
   const istOffset = 5.5 * 60 * 60 * 1000;
-  const istTime = new Date(now.getTime() );
+  const istTime = new Date(now.getTime() + istOffset );
 
   const formattedDate = `${istTime.getDate().toString().padStart(2, "0")}-${(
     istTime.getMonth() + 1
